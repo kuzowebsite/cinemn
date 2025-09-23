@@ -11,7 +11,7 @@ export function Header() {
             <a href="#" className="text-foreground hover:text-primary transition-colors">
               Нүүр
             </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="/movue" className="text-muted-foreground hover:text-primary transition-colors">
               Кино
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
