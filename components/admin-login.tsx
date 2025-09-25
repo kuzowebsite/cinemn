@@ -90,7 +90,9 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
                   ? "Бүртгүүлэх"
                   : "Нэвтрэх"}
             </Button>
-            
+            <Button type="button" variant="ghost" className="w-full" onClick={() => setIsRegistering(!isRegistering)}>
+              {isRegistering ? "Нэвтрэх хэсэг рүү буцах" : "Админ бүртгүүлэх"}
+            </Button>
           </form>
         </CardContent>
       </Card>
