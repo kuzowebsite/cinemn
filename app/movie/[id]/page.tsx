@@ -112,6 +112,10 @@ export default function MovieDetailPage({ params }: { params: { id: string } }) 
                       <Plus className="w-5 h-5" />
                       Жагсаалтад нэмэх
                     </Button>
+                    <Button variant="outline" size="lg" className="gap-2 bg-transparent">
+                      <Share className="w-5 h-5" />
+                      Хуваалцах
+                    </Button>
                   </div>
                 </div>
               </div>
