@@ -1,11 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
 import { MovieHeroBanner } from "@/components/movie-hero-banner"
 import { MovieSection } from "@/components/movie-section"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { getAllMovies } from "@/lib/movie-service"
+import { useAuth } from "@/components/auth-context"
 
 interface Movie {
   id: string
@@ -19,6 +21,17 @@ interface Movie {
 export default function HomePage() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
+  const { user, loading: authLoading, isApproved } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!authLoading) {
+      if (!user || !isApproved) {
+        router.push("/login")
+        return
+      }
+    }
+  }, [user, isApproved, authLoading, router])
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -32,8 +45,10 @@ export default function HomePage() {
       }
     }
 
-    fetchMovies()
-  }, [])
+    if (user && isApproved) {
+      fetchMovies()
+    }
+  }, [user, isApproved])
 
   const convertToDisplayFormat = (movies: Movie[]) => {
     return movies.map((movie) => ({
@@ -43,15 +58,19 @@ export default function HomePage() {
     }))
   }
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-lg">Кино ачаалж байна...</p>
+          <p className="text-lg">Ачаалж байна...</p>
         </div>
       </div>
     )
+  }
+
+  if (!user || !isApproved) {
+    return null
   }
 
   const recentlyWatched = convertToDisplayFormat(movies.slice(0, 4))
