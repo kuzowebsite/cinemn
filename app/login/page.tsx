@@ -11,6 +11,26 @@ export default function LoginPage() {
   const router = useRouter()
 
   useEffect(() => {
+    const checkStoredUser = () => {
+      if (typeof window !== "undefined") {
+        const storedUser = localStorage.getItem("currentUser")
+        if (storedUser) {
+          try {
+            const user = JSON.parse(storedUser)
+            console.log("[v0] Found stored user session:", user)
+            setIsLoggedIn(true)
+            router.push("/")
+            return
+          } catch (error) {
+            console.log("[v0] Error parsing stored user:", error)
+            localStorage.removeItem("currentUser")
+          }
+        }
+      }
+    }
+
+    checkStoredUser()
+
     const unsubscribe = onAuthStateChange(async (user) => {
       if (user) {
         if (isAdmin(user)) {
